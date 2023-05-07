@@ -22,5 +22,6 @@ public:
     bool esCoordenadaValida(Coordenada coordenada) const;
     void setCoord();
     void dibuja();
+    void inicio();
 };
 
