@@ -2,10 +2,14 @@
 
 #include "Pieza.h"
 #include "Coordenada.h"
+#include "Casilla.h"
 
 const int TAM_TABLERO = 8;
 
 class Tablero {
+private:
+    int tablero[8][8];
+    Pieza* casillas[TAM_TABLERO][TAM_TABLERO];
 public:
     Tablero();
     ~Tablero();
@@ -17,8 +21,5 @@ public:
     bool moverPieza(Coordenada origen, Coordenada destino);
     //comprobar que la casilla está dentro del tablero
     bool esCoordenadaValida(Coordenada coordenada) const;
-    
-private:
-    Pieza* casillas[TAM_TABLERO][TAM_TABLERO];
 };
 
