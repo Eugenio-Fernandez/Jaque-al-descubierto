@@ -12,72 +12,41 @@ const int TAM_CASILLA = 75;
 
 Tablero tablero;
 
-void display() {
-	
-    glClear(GL_COLOR_BUFFER_BIT);
-    // Borde del tablero
-    glColor3f(0.4f, 0.2f, 0.0f);
-    glRecti(-75, -75, TAM_CASILLA * 10, TAM_CASILLA * 10);
-	
-    // Dibujar posiciones del tablero
-    glColor3f(1.0f, 1.0f, 1.0f);
-
-    for (int i = 0; i < TAM_TABLERO; i++) {
-
-        char letra = 'a';
-
-        for (int j = 0; j < 2; j = j++) {
-            
-            glRasterPos2i((i + 1) * TAM_CASILLA + TAM_CASILLA / 2, j*TAM_CASILLA*(TAM_TABLERO + 1) + TAM_CASILLA / 2);
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, letra + i);
-            glRasterPos2i(TAM_CASILLA / 2 + j * TAM_CASILLA * (TAM_TABLERO + 1), (i + 1) * TAM_CASILLA + TAM_CASILLA / 2); 
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '8' - i);
-        }
-    }
-
-
-    // Tablero
-    for (int fila = 1; fila < TAM_TABLERO; fila++) {
-
-        for (int columna = 1; columna < TAM_TABLERO; columna++) {
-
-            if ((fila + columna) % 2 == 0) {
-                glColor3f(0.8f, 0.6f, 0.4f);
-            }
-            else {
-                glColor3f(0.6f, 0.4f, 0.2f);
-            }
-
-            glRecti(columna * TAM_CASILLA, fila * TAM_CASILLA,
-                (columna + 1) * TAM_CASILLA, (fila + 1) * TAM_CASILLA);
-        }
-    }
-
-    glFlush();
-}
-
 int main(int argc,char* argv[]) {
+	glutInit(&argc, argv);
+	glutInitWindowSize(800, 800);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutCreateWindow("Jaque al descubierto");
+	glClearColor(0, 0, 1, 1);
+	glColor3f(1.f, 0, 0);
+	glOrtho(800, 0, 800, 0, -1, 1);
 	
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(TAM_CASILLA* TAM_TABLERO, TAM_CASILLA * TAM_TABLERO);
-    glutCreateWindow("Jaque al descubierto");
+	//Registrar los callbacks
+	glutDisplayFunc(OnDraw);
+	
+	Menu();
+	tablero.setCoord();
+	glutMainLoop();
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, TAM_CASILLA * TAM_TABLERO + 150, TAM_CASILLA * TAM_TABLERO + 150, 0, -1, 1);
-
-    glutDisplayFunc(display);
-    Menu();
-
-    glutMainLoop();
-
-    return 0;
+    	return 0;
 }
 
 void OnDraw(void)
 {
+	//Borrado de la pantalla	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Para definir el punto de vista
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
 	Menu();
+	tablero.dibuja();
+	//pieza.dibuja();
+
+	//no borrar esta linea ni poner nada despues
+	glutSwapBuffers();
+	
 }
 
 void Menu()
