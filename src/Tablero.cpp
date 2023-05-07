@@ -39,8 +39,8 @@ void Tablero::setCoord()
 {
     for (int i = 0; i < TAM_TABLERO; i++) {
         for (int j = 0; j < TAM_TABLERO; j++) {
-            coordTab[i].x = (50.0 + i * 100.0);
-            coordTab[j].y = (50.0 + j * 100.0);
+            coordTab[i].fila = (50.0 + i * 100.0);
+            coordTab[j].columna = (50.0 + j * 100.0);
         }
     }
 }
