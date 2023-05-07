@@ -25,7 +25,10 @@ int main(int argc,char* argv[]) {
 	glutDisplayFunc(OnDraw);
 	
 	Menu();
+	
+	tablero.inicio();
 	tablero.setCoord();
+	
 	glutMainLoop();
 
     	return 0;
