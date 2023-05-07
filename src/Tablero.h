@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Pieza.h"
 #include "Coordenada.h"
 #include "Casilla.h"
@@ -12,7 +11,7 @@ private:
     Pieza* casillas[TAM_TABLERO][TAM_TABLERO];
 public:
     Tablero();
-    ~Tablero();
+    virtual ~Tablero();
     //saber posición de la pieza
     Pieza* obtenerPosicionPieza(Coordenada posicion);
     // colocar la pieza en una posición determinada (al inicio)
@@ -21,5 +20,7 @@ public:
     bool moverPieza(Coordenada origen, Coordenada destino);
     //comprobar que la casilla está dentro del tablero
     bool esCoordenadaValida(Coordenada coordenada) const;
+    void setCoord();
+    void dibuja();
 };
 
