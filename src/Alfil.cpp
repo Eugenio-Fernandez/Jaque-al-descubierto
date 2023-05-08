@@ -12,3 +12,6 @@ bool Alfil::mueve(struct jugada& movimiento)
 	error = 0;
 	return error;
 }
+Alfil::~Alfil()
+{
+}
