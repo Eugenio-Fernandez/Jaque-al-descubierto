@@ -1,5 +1,7 @@
 #include "ListaPiezas.h"
-
+ListaPiezas::~ ListaPiezas()
+{
+}
 ListaPiezas::ListaPiezas()
 {
 	numero = 0;
