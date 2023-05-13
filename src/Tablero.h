@@ -2,26 +2,28 @@
 #include "Pieza.h"
 #include "Coordenada.h"
 #include "Casilla.h"
+#include "ETSIDI.h"
+#include "Selector.h"
+using ETSIDI::SpriteSequence;
 
 const int TAM_TABLERO = 8;
 
-class Tablero {
+class Tablero
+{
 private:
-    int tablero[8][8];
+    int tablero[TAM_TABLERO][TAM_TABLERO];
     Pieza* casillas[TAM_TABLERO][TAM_TABLERO];
+    SpriteSequence sprite_selector{ "imagenes/Selector.png",5 };
+    Selector selector;
 public:
+    static int start[TAM_TABLERO][TAM_TABLERO];
+    Coordenada coordTab[32];
     Tablero();
-    virtual ~Tablero();
-    //saber posición de la pieza
-    Pieza* obtenerPosicionPieza(Coordenada posicion);
-    // colocar la pieza en una posición determinada (al inicio)
-    void colocarPieza(Coordenada posicion, Pieza* pieza);
-    //mover las piezas de ua coordenada a otra
-    bool moverPieza(Coordenada origen, Coordenada destino);
-    //comprobar que la casilla está dentro del tablero
-    bool esCoordenadaValida(Coordenada coordenada) const;
     void setCoord();
+    virtual ~Tablero();
     void dibuja();
     void inicio();
+    void dibuja_selector();
+    void tecla_selector(unsigned char key);
 };
 
