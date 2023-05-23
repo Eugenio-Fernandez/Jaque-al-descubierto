@@ -29,7 +29,9 @@ void Menu::dibuja()
 	if (modo1 == 1 && modo2==1)
 	{
 		tablero2.dibuja();
-	    tablero2.dibuja_selector();
+		tablero2.dibuja_selector();
+		ETSIDI::play("sonidos/cr7.wav");
+		modo1 = 0;
 	}
 
 	if (modo1 == 2 && modo2==1)
