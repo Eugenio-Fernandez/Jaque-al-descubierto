@@ -15,7 +15,7 @@ public:
 	void setAccion();
 	bool getAccion();
 	bool jaque_a_enemigo(ListaPiezas& piezas, int origen, int destino, Pieza *p);
-	bool jaque_propio(ListaPiezas& piezas, int origen, int destino, Pieza* p);
+	bool jaque_propio(ListaPiezas& piezas, int origen, int destino, Pieza* p, bool pieza_enemiga);
 
 };
 

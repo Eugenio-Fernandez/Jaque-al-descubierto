@@ -42,7 +42,7 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 				if ((mov_val)&&(pieza_amiga==FALSE)&&(pieza_saltada(piezas,p_turno->getCasilla(), casilla_selector) == FALSE)) {
 					
 					if ((turno % 2 == 0) && (p_turno->getColor() == 0)) {
-						jaque_a_blanco = jaque_propio(piezas, p_turno->getCasilla(), casilla_selector, p_turno);
+						jaque_a_blanco = jaque_propio(piezas, p_turno->getCasilla(), casilla_selector, p_turno, pieza_enemiga);
 						std::cout << "Jaque a blanco: " << jaque_a_blanco << endl;
 						if (jaque_a_blanco == 0) {
 							p_turno->mueve(destino);
@@ -58,7 +58,7 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 					}
 					
 					if ((turno % 2 != 0) && (p_turno->getColor() != 0)) {
-						jaque_a_negro = jaque_propio(piezas, p_turno->getCasilla(), casilla_selector, p_turno);
+						jaque_a_negro = jaque_propio(piezas, p_turno->getCasilla(), casilla_selector, p_turno, pieza_enemiga);
 						std::cout << "Jaque a negro: " << jaque_a_negro << endl;
 						if (jaque_a_negro==0) {
 							p_turno->mueve(destino);
@@ -188,7 +188,7 @@ bool Interaccion::jaque_a_enemigo(ListaPiezas& piezas, int origen, int destino, 
 	return FALSE;
 }
 
-bool Interaccion::jaque_propio(ListaPiezas& piezas, int origen, int destino, Pieza* p) {
+bool Interaccion::jaque_propio(ListaPiezas& piezas, int origen, int destino, Pieza* p, bool pieza_enemiga) {
 	bool jaque = FALSE;
 	bool saltar = FALSE;
 	Pieza* rey, *comprobacion;
@@ -201,9 +201,15 @@ bool Interaccion::jaque_propio(ListaPiezas& piezas, int origen, int destino, Pie
 	saltar = pieza_saltada(piezas, origen, destino);
 	p->setCasilla(destino);
 
+	
+	
 
 	for (int i = 0; i < piezas.getNum(); i++) {
-		if ((piezas.getPieza(i).getColor() != rey->getColor()) && (piezas.getPiezap(i) != rey) && (piezas.getPiezap(i) != p)) {
+		int pieza_comida=100;//valor que ninguna pieza tendra
+		if ((pieza_enemiga == 1)&&(piezas.getPieza(i).getCasilla()==destino)) {
+			pieza_comida=i;
+		}
+		if ((i!=pieza_comida)&&(piezas.getPieza(i).getColor() != rey->getColor()) && (piezas.getPiezap(i) != rey) && (piezas.getPiezap(i) != p)) {
 			saltar = pieza_saltada(piezas, piezas.getPieza(i).getCasilla(), rey->getCasilla());
 			if (saltar == FALSE) {
 				//piezas.getPieza(i).movimientovalido(piezas.getPieza(i).getCasilla(), rey->getCasilla(), jaque);
