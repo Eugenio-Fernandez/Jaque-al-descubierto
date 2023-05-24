@@ -1,18 +1,24 @@
 #pragma once
 #include "Pieza.h"
+#include "Alfil.h"
+#include "Caballo.h"
+#include "Peon.h"
+#include "Reina.h"
+#include "Rey.h"
+#include "Torre.h"
+
+#define MAX_PIEZAS 32
+
 class ListaPiezas
 {
-	int numero;
-	Pieza* lista[32];
-
+private:
+	int n;
+	Pieza* lista[MAX_PIEZAS];
 public:
 	ListaPiezas();
-	virtual ~ListaPiezas();
-
+	bool agregar(Pieza* t);
 	void dibuja();
-	void eliminar(Pieza* p);
-	void eliminar(int index);
-	int getNumeropiezas() { return numero; }
-	void eliminarContenido();
-
+	int getNum() { return n; }
+	//void inicializa();
 };
+
