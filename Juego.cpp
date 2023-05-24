@@ -1,97 +1,123 @@
-#include <GL/glut.h>
+#include <freeglut.h>
 #include "Coordenada.h"
 #include "Tablero.h"
-#include <string>
 #include <iostream>
+#include "Pieza.h"
+#include "ETSIDI.h"
+#include "Interaccion.h"
+#include "Selector.h"
+
+
+using ETSIDI::SpriteSequence;
 
 using namespace std;
 
-const int TAM_CASILLA = 75;
-void menu(int value) {
-    switch (value) {
-    case 1:
-        std::cout << "Has seleccionado: Nueva partida" << std::endl;
-        // Aquí va el código para iniciar una nueva partida
-        break;
-    case 2:
-        std::cout << "Has seleccionado: Cargar partida" << std::endl;
-        // Aquí va el código para cargar una partida guardada
-        break;
-    case 3:
-        std::cout << "Has seleccionado: Guardar partida" << std::endl;
-        // Aquí va el código para guardar la partida actual
-        break;
-    case 4:
-        std::cout << "Has seleccionado: Salir del juego" << std::endl;
-        // Aquí va el código para salir del juego
-        exit(0);
-        break;
-    }
-}
-void display() {
-
-    glClear(GL_COLOR_BUFFER_BIT);
-    // Dibujar el borde del tablero
-    glColor3f(0.4f, 0.2f, 0.0f);
-    glRecti(-75, -75, TAM_CASILLA * 10, TAM_CASILLA * 10);
-
-    // Dibujar posiciones del tablero
-    glColor3f(1.0f, 1.0f, 1.0f);
-
-    for (int i = 0; i < TAM_TABLERO; i++) {
-
-        char letra = 'a';
-
-        for (int j = 0; j < 2; j = j++) {
-
-            glRasterPos2i((i + 1) * TAM_CASILLA + TAM_CASILLA / 2, j * TAM_CASILLA * (TAM_TABLERO + 1) + TAM_CASILLA / 2);
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, letra + i);
-            glRasterPos2i(TAM_CASILLA / 2 + j * TAM_CASILLA * (TAM_TABLERO + 1), (i + 1) * TAM_CASILLA + TAM_CASILLA / 2);
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '8' - i);
-        }
-    }
+Tablero tablero;
+Interaccion interaccion;
+int xpos_raton, ypos_raton;
 
 
-    // Dibujar el tablero
-    for (int fila = 1; fila <= TAM_TABLERO; fila++) {
 
-        for (int columna = 1; columna <= TAM_TABLERO; columna++) {
-
-            if ((fila + columna) % 2 == 0) {
-                glColor3f(0.8f, 0.6f, 0.4f);
-            }
-            else {
-                glColor3f(0.6f, 0.4f, 0.2f);
-            }
-
-            glRecti(columna * TAM_CASILLA, fila * TAM_CASILLA,
-                (columna + 1) * TAM_CASILLA, (fila + 1) * TAM_CASILLA);
-        }
-    }
-
-    glFlush();
-}
+void OnDraw(void); //esta funcion sera llamada para dibujar
+void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
+void onSpecialKeyboardDown(int key, int x, int y);
+void glutMouseFunc(int boton, int estado, int x, int y);
 
 int main(int argc, char* argv[])
 {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(TAM_CASILLA * TAM_TABLERO, TAM_CASILLA * TAM_TABLERO);
-    glutCreateWindow("Ajedrez");
+	//Inicializar el gestor de ventanas GLUT
+	//y crear la ventana
+	glutInit(&argc, argv);
+	glutInitWindowSize(700, 700);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutCreateWindow("Jaque al descubierto");
+	glClearColor(0, 0, 1, 1);
+	glColor3f(1.f, 0, 0);
+	glOrtho(700, 0, 700, 0, -1, 1);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, TAM_CASILLA * TAM_TABLERO + 150, TAM_CASILLA * TAM_TABLERO + 150, 0, -1, 1);
-    // Crear el menú
-    glutCreateMenu(menu);
-    glutAddMenuEntry("Nueva partida", 1);
-    glutAddMenuEntry("Cargar partida", 2);
-    glutAddMenuEntry("Guardar partida", 3);
-    glutAddMenuEntry("Salir", 4);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
-    glutDisplayFunc(display);
+	//Registrar los callbacks
+	glutDisplayFunc(OnDraw);
+	glutKeyboardFunc(OnKeyboardDown);
+	glutSpecialFunc(onSpecialKeyboardDown); //gestion de los cursores
+	glutMouseFunc(glutMouseFunc);
+	
+	tablero.setCoord();
+	tablero.inicio();
 
-    glutMainLoop();
+	//pasarle el control a GLUT,que llamara a los callbacks
+	glutMainLoop();
 
-    return 0;
+	return 0;
 }
+
+void OnDraw(void)
+{
+	//Borrado de la pantalla	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Para definir el punto de vista
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+
+	tablero.dibuja();
+	tablero.dibuja_selector();
+	tablero.piezas.dibuja();
+	
+	/*
+	prueba.setSize(0.25, 0.25);
+	prueba.setCenter(Tablero::coordTab[56].x,Tablero::coordTab[56].y);
+	glPushMatrix();
+	prueba.draw();
+	glPopMatrix();*/
+
+	//no borrar esta linea ni poner nada despues
+	
+
+	glutSwapBuffers();
+}
+
+void glutMouseFunc(int boton, int estado, int x, int y) {
+	if ((boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN)&&(interaccion.getAccion()==FALSE)) {
+		tablero.mouse_selector(x, y);
+		if (tablero.casilla_vacia() == FALSE) {
+			interaccion.setAccion();
+		}
+	}
+	if ((interaccion.getAccion() == TRUE) && (boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN)) {
+		tablero.mouse_selector(x, y);
+		Selector selector = tablero.getSelector();
+		cout << tablero.getSelector().getCasilla() << endl;
+		interaccion.mover_pieza(selector, tablero.piezas);
+	}
+	glutPostRedisplay();
+}
+
+void OnKeyboardDown(unsigned char key, int x_t, int y_t)
+{
+	
+	if ((interaccion.getAccion() == TRUE) && (key == ' ')) {
+		Selector selector= tablero.getSelector();
+		cout << tablero.getSelector().getCasilla() << endl;
+		interaccion.mover_pieza(selector, tablero.piezas);
+		
+	}
+	
+	tablero.tecla_selector(key);
+
+	if (key == ' ') {
+		interaccion.setAccion();
+		cout << tablero.getSelector().getCasilla() << endl;
+		//std::cout << tablero.getSelector().getFila() << tablero.getSelector().getColumna() << endl;
+	}
+	glutPostRedisplay();
+}
+
+void onSpecialKeyboardDown(int key, int x, int y)
+{
+	tablero.tecla_selector(key);
+	glutPostRedisplay();
+}
+
+
+
