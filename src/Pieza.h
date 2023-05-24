@@ -2,7 +2,7 @@
 #include <vector>
 #include "Coordenada.h"
 #include "ETSIDI.h"
-#include "Interaccion.h"
+
 using ETSIDI::SpriteSequence;
 
 using namespace std;
@@ -12,11 +12,22 @@ enum class Color {
     Negro
 };
 
+// tipo
+/*
+Alfil = 1
+Caballo = 2
+Dama = 3
+Peon = 4
+Rey = 5
+Torre = 6
+*/
+
 class Pieza {
-    friend class Interaccion;
-    Coordenada posicion;
+    
 protected:
+    int casilla;
     int color;// 0 blanca 1 negra
+    int tipo;
     Coordenada posicion;
     SpriteSequence sprite1{ "imagenes/AlfilBlanco.png",1 };
     SpriteSequence sprite2{ "imagenes/CaballoBlanco.png",1 };
@@ -34,6 +45,12 @@ public:
     Pieza();
     //virtual ~Pieza();
     virtual void dibuja();
-    virtual void mueve(Coordenada origen, Coordenada destino);
+    //virtual void mueve(Coordenada origen, Coordenada destino);
+    void mueve(Coordenada destino);
+    void setCasilla(int casilla_);
+    int getCasilla() { return casilla; }
+    int getColor() { return color; }
+    int getTipo() { return tipo; }
     Coordenada getPos();
+    virtual void movimientovalido(int origen, int destino, bool &b){}
 };

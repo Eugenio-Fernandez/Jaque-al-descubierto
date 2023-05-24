@@ -19,6 +19,10 @@ public:
 	bool agregar(Pieza* t);
 	void dibuja();
 	int getNum() { return n; }
+	Pieza* getPiezap(int index);
+	Pieza getPieza(int index);
+	void eliminar(int index);
+	void eliminarContenido();
 	//void inicializa();
 };
 

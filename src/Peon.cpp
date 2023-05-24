@@ -1,79 +1,45 @@
 #include "Peon.h"
+#include<iostream>
 
-//Peon::Peon(Color color, Coordenada posicion) : Pieza(color, posicion) {}
-//Peon::~Peon() {}
-
-bool Peon::esMovimientoValido(Coordenada origen, Coordenada destino, Tablero& tablero) const {
-    
-    int direccion = (obtenerColor() == Color::Blanco) ? 1 : -1;
-    int filaOrigen = origen.fila;
-    int filaDestino = destino.fila;
-    int columnaOrigen = origen.columna;
-    int columnaDestino = destino.columna;
-
-    // Validar que el movimiento sea diagonal para capturar una pieza del oponente
-    if (columnaOrigen != columnaDestino && filaOrigen + direccion == filaDestino) {
-        
-        Pieza* piezaEnDestino = tablero.obtenerPosicionPieza(destino);
-        
-        if (piezaEnDestino != nullptr && piezaEnDestino->obtenerColor() != obtenerColor()) {
-            
-            return true;
-        }
-    }
-    // Validar que el movimiento sea hacia adelante
-    else if (columnaOrigen == columnaDestino && filaOrigen + direccion == filaDestino) {
-    // Validar que el peón no tenga piezas bloqueándolo
-        if (tablero.obtenerPosicionPieza(destino) == nullptr) {
-            return true;
-        }
-    }
-    return false;
+Peon::Peon(Coordenada posicion_, int color_, int casilla_)
+{
+	sprite3.setSize(0.25, 0.25);
+	sprite9.setSize(0.25, 0.25);
+	posicion.x = posicion_.x;
+	posicion.y = posicion_.y;
+	color = color_;
+	casilla = casilla_;
+	tipo = 4;
 }
 
+Peon::~Peon()
+{
 
-vector<Coordenada> Peon::obtenerTodasLasJugadasPosibles(Tablero& tablero) const {
-    
-    vector<Coordenada> jugadasPosibles;
+}
 
-    int direccion = (obtenerColor() == Color::Blanco) ? 1 : -1;
-    int fila = obtenerPosicionActual().fila;
-    int columna = obtenerPosicionActual().columna;
-    
-    // Agregar movimiento hacia adelante
-    Coordenada posibleJugada;
-    posibleJugada.fila = fila + direccion;
-    posibleJugada.columna = columna;
-    
-    if (tablero.esCoordenadaValida(posibleJugada) && tablero.obtenerPosicionPieza(posibleJugada) == nullptr) {
-        
-        jugadasPosibles.push_back(posibleJugada);
-    }
+void Peon::dibuja() {
+	
+	if (color == 0) {
+		sprite3.setCenter((float)posicion.x, (float)posicion.y);
+		glPushMatrix();
+		sprite3.draw();
+		glPopMatrix();
+	}
+	if (color == 1) {
+		sprite9.setCenter((float)posicion.x, (float)posicion.y);
+		glPushMatrix();
+		sprite9.draw();
+		glPopMatrix();
+	}
+}
 
-    // Agregar movimientos diagonales para capturar piezas del oponente
-    posibleJugada.fila = fila + direccion;
-    posibleJugada.columna = columna + 1;
-
-    if (tablero.esCoordenadaValida(posibleJugada)) {
-        
-        Pieza* piezaEnDestino = tablero.obtenerPosicionPieza(posibleJugada);
-        
-        if (piezaEnDestino != nullptr && piezaEnDestino->obtenerColor() != obtenerColor()) {
-            
-            jugadasPosibles.push_back(posibleJugada);
-        }
-    }
-    
-    posibleJugada.fila = fila + direccion;
-    posibleJugada.columna = columna + 1;
-
-    if (tablero.esCoordenadaValida(posibleJugada)) {
-        
-        Pieza* piezaEnDestino = tablero.obtenerPosicionPieza(posibleJugada);
-        
-        if (piezaEnDestino != nullptr && piezaEnDestino->obtenerColor() != obtenerColor()) {
-            jugadasPosibles.push_back(posibleJugada);
-        }
-    }
-    return jugadasPosibles;
+void Peon::movimientovalido(int origen, int destino, bool& b) {
+	int dif = destino - origen;
+	std::cout << dif << endl;
+	if (((dif%7==0)||(dif%8==0)||(dif%9==0))&&((dif<10)&&(dif>-10))&&(((dif>0)&&(color == 0))||((dif < 0) && (color == 1)))) {
+		b = TRUE;
+	}
+	else {
+		b = FALSE;
+	}
 }

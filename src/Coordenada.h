@@ -1,6 +1,6 @@
 #pragma once
 
 struct Coordenada {
-    int fila;
-    int columna;
+    float x;
+    float y;
 };

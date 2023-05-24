@@ -1,6 +1,12 @@
 #pragma once
-class Reina
+#include "Pieza.h"
+class Reina:public Pieza
 {
-  virtual~Reina();
+public:
+	Reina(Coordenada posicion_, int color_, int casilla_);
+	~Reina();
+	void dibuja();
+	int getColor() { return color; }
+	void movimientovalido(int origen, int destino, bool& b);
 };
 

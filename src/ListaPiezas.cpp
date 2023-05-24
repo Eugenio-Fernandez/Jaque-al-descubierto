@@ -26,10 +26,29 @@ void ListaPiezas::dibuja()
 	}
 
 }
-/*
-void ListaPiezas::inicializa() {
-	Coordenada pos = {0,0};
-	Torre* aux = new Torre(pos);
-	lista[0]->agregar(aux);
-}*/
 
+
+Pieza ListaPiezas::getPieza(int index){
+	return *lista[index];
+}
+
+Pieza* ListaPiezas::getPiezap(int index) {
+	return lista[index];
+}
+
+void ListaPiezas::eliminar(int index){
+	if ((index < 0) || (index >= n))
+		return;
+	delete lista[index];
+	n--;
+	for (int i = index; i < n; i++)
+		lista[i] = lista[i + 1];
+}
+
+
+
+void ListaPiezas::eliminarContenido() {
+	for (int i = 0; i < MAX_PIEZAS; i++) //eliminacion de las piezas
+		lista[i] = 0;
+	n = 0;
+}

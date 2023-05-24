@@ -1,6 +1,12 @@
 #pragma once
-class Rey
+#include "Pieza.h"
+class Rey:public Pieza
 {
-  virtual ~Rey();
+public:
+	Rey(Coordenada posicion_, int color_, int casilla_);
+	~Rey();
+	void dibuja();
+	int getColor() { return color; }
+	void movimientovalido(int origen, int destino, bool& b);
 };
 

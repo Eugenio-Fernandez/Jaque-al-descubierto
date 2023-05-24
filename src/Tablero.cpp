@@ -35,33 +35,33 @@ void Tablero::inicio()
     }
     for (int i = 0; i < 2; i++) {
         Coordenada pos = coordTab[0 + 56 * i];
-        Torre* aux = new Torre(pos, i);
+        Torre* aux = new Torre(pos, i, 0 + 56 * i);
         piezas.agregar(aux);
         pos = coordTab[7 + 56 * i];
-        Torre* aux1 = new Torre(pos, i);
+        Torre* aux1 = new Torre(pos, i, 7 + 56 * i);
         piezas.agregar(aux1);
         pos = coordTab[2 + 56 * i];
-        Alfil* aux2 = new Alfil(pos, i);
+        Alfil* aux2 = new Alfil(pos, i, 2 + 56 * i);
         piezas.agregar(aux2);
         pos = coordTab[5 + 56 * i];
-        Alfil* aux3 = new Alfil(pos, i);
+        Alfil* aux3 = new Alfil(pos, i, 5 + 56 * i);
         piezas.agregar(aux3);
         pos = coordTab[1 + 56 * i];
-        Caballo* aux4 = new Caballo(pos, i);
+        Caballo* aux4 = new Caballo(pos, i, 1 + 56 * i);
         piezas.agregar(aux4);
         pos = coordTab[6 + 56 * i];
-        Caballo* aux5 = new Caballo(pos, i);
+        Caballo* aux5 = new Caballo(pos, i, 6 + 56 * i);
         piezas.agregar(aux5);
         pos = coordTab[3 + 56 * i];
-        Reina* aux6 = new Reina(pos, i);
+        Reina* aux6 = new Reina(pos, i, 3 + 56 * i);
         piezas.agregar(aux6);
         pos = coordTab[4 + 56 * i];
-        Rey* aux7 = new Rey(pos, i);
+        Rey* aux7 = new Rey(pos, i, 4 + 56 * i);
         piezas.agregar(aux7);
         for (int j = 0; j < 8; j++)
         {
-            pos = coordTab[j + 48 * i];
-            Peon* auxp = new Peon(pos, i);
+            pos = coordTab[j + 8 + 40 * i];
+            Peon* auxp = new Peon(pos, i, j + 8 + 40 * i);
             piezas.agregar(auxp);
         }
     }
@@ -78,6 +78,8 @@ void Tablero::setCoord()
             //std::cout << coordTab[k-1].x << " , " << coordTab[k-1].y << " , " << k << "\n";
         }
     }
+//std:cout << coordTab[36].x << "," << coordTab[36].y;
+
 }
 
 Tablero::~Tablero() {
@@ -112,20 +114,31 @@ void Tablero::dibuja() {
 
 void Tablero::dibuja_selector() {
     sprite_selector.setSize(0.25, 0.25);
-    sprite_selector.setCenter(1 + ((-1.0) * selector.getFila() / 4), 1.0 - 1.0 * selector.getColumna() / 4);
+    sprite_selector.setCenter(1 + ((-1.0) * selector.getColumna() / 4), 1.0 - 1.0 * selector.getFila() / 4);
     sprite_selector.draw();
     glPopMatrix();
 }
 
 void Tablero::tecla_selector(unsigned char key) {
-    selector.mover(key);
-
-    if ((interaccion.getAccion() == TRUE)&&(key == ' ')) {
-        interaccion.mover_pieza(selector, piezas, accion);
-    }
-
     if (key == ' ') {
         selector.setOrigen();
-        interaccion.setAccion();
-    }   
+    } 
+    selector.mover(key);
+}
+
+Selector Tablero::getSelector() {
+    return selector;
+}
+
+void Tablero::mouse_selector(int x, int y) {
+    selector.setOrigen();
+    selector.mover_con_raton(x, y);
+}
+
+bool Tablero::casilla_vacia() {
+    for (int i = 0; i < piezas.getNum(); i++) {
+        if (selector.getCasilla_actual()==piezas.getPieza(i).getCasilla())
+            return FALSE;
+    }
+    return TRUE;
 }
