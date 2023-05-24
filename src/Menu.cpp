@@ -7,36 +7,37 @@ using ETSIDI::Sprite;
 Tablero tablero2;
 Menu::Menu()
 {
-	//inicio = false;
-	menu1->setSize(2.0,2.0);
-	menu1->setPos(3.0, 3.0);
+
+	menu1->setSize(2.0, 2.0);
+	menu1->setPos(4.0, 4.0);
 	menu2->setSize(2.0, 2.0);
-	menu2->setPos(3.0, 3.0);
+	menu2->setPos(4.0, 4.0);
 }
 
 Menu::~Menu()
 {
 	menu1->~Sprite();
+	menu2->~Sprite();
 }
 
 void Menu::dibuja()
 {
-	menu1->draw();
-	
-	if (modo1 == 1)menu1->draw();
-	if (modo1 == 2)menu2->draw();
-
-	if (modo1 == 1 && modo2==1)
-	{
-		tablero2.dibuja();
-		tablero2.dibuja_selector();
-		ETSIDI::play("sonidos/cr7.wav");
-		modo1 = 0;
-	}
-
-	if (modo1 == 2 && modo2==1)
-	{
-		exit(0);
+	if(inicio == 0) {
+		
+		if (modo1 == 1)menu1->draw();
+		if (modo1 == 2)menu2->draw();
+		if (modo1 == 1 && modo2 == 1) {
+			
+			ETSIDI::play("sonidos/cr7.wav");
+			modo1 = 0;
+			inicio = 1;
+			delete menu1;
+			delete menu2;
+		}
+		
+		if (modo1 == 2 && modo2 == 1 && inicio ==0) {
+			exit(0);
+		}
 	}
 }
 
@@ -68,3 +69,22 @@ void Menu::tecla2(unsigned char key) {
 	}
 }
 
+
+void Menu::flecha(int key) {
+
+	if (start == false) {
+		switch (key) {
+		case GLUT_KEY_UP:
+			if (pantalla == 0) {
+				pantalla = 1;
+			}
+			break;
+
+		case GLUT_KEY_DOWN:
+			if (pantalla == 1) {
+				pantalla = 0;
+			}
+			break;
+		}
+	}
+}
