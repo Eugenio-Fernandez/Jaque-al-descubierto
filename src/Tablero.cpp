@@ -33,14 +33,49 @@ void Tablero::inicio()
             tablero[i][j] = start[i][j];
         }
     }
+    for (int i = 0; i < 2; i++) {
+        Coordenada pos = coordTab[0 + 56 * i];
+        Torre* aux = new Torre(pos, i);
+        piezas.agregar(aux);
+        pos = coordTab[7 + 56 * i];
+        Torre* aux1 = new Torre(pos, i);
+        piezas.agregar(aux1);
+        pos = coordTab[2 + 56 * i];
+        Alfil* aux2 = new Alfil(pos, i);
+        piezas.agregar(aux2);
+        pos = coordTab[5 + 56 * i];
+        Alfil* aux3 = new Alfil(pos, i);
+        piezas.agregar(aux3);
+        pos = coordTab[1 + 56 * i];
+        Caballo* aux4 = new Caballo(pos, i);
+        piezas.agregar(aux4);
+        pos = coordTab[6 + 56 * i];
+        Caballo* aux5 = new Caballo(pos, i);
+        piezas.agregar(aux5);
+        pos = coordTab[3 + 56 * i];
+        Reina* aux6 = new Reina(pos, i);
+        piezas.agregar(aux6);
+        pos = coordTab[4 + 56 * i];
+        Rey* aux7 = new Rey(pos, i);
+        piezas.agregar(aux7);
+        for (int j = 0; j < 8; j++)
+        {
+            pos = coordTab[j + 48 * i];
+            Peon* auxp = new Peon(pos, i);
+            piezas.agregar(auxp);
+        }
+    }
 }
 
 void Tablero::setCoord()
 {
-    for (int i = 0; i < TAM_TABLERO; i++) {
-        for (int j = 0; j < TAM_TABLERO; j++) {
-            coordTab[i].x = (1.0001 - i * 0.25);
-            coordTab[j].y = (0.99 - j * 0.25);
+    int k = 0;
+    for (int j = 0; j < TAM_TABLERO; j++) {
+        for (int i = 0; i < TAM_TABLERO; i++) {
+            coordTab[k].x = (1.0001 - i * 0.25);
+            coordTab[k].y = (0.99 - j * 0.25);
+            k++;
+            //std::cout << coordTab[k-1].x << " , " << coordTab[k-1].y << " , " << k << "\n";
         }
     }
 }
@@ -58,6 +93,7 @@ Tablero::~Tablero() {
 }
 
 void Tablero::dibuja() {
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Tablero.png").id);
     glDisable(GL_LIGHTING);
@@ -70,6 +106,8 @@ void Tablero::dibuja() {
     glEnd();
     glEnable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
+    
+
 }
 
 void Tablero::dibuja_selector() {
@@ -81,4 +119,13 @@ void Tablero::dibuja_selector() {
 
 void Tablero::tecla_selector(unsigned char key) {
     selector.mover(key);
+
+    if ((interaccion.getAccion() == TRUE)&&(key == ' ')) {
+        interaccion.mover_pieza(selector, piezas, accion);
+    }
+
+    if (key == ' ') {
+        selector.setOrigen();
+        interaccion.setAccion();
+    }   
 }
