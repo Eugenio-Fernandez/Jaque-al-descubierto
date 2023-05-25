@@ -29,7 +29,7 @@ protected:
     int color;// 0 blanca 1 negra
     int tipo;
     bool pieza_movida = FALSE;
-    bool pieza_enemiga = FALSE;
+    bool pieza_enemiga_pieza = FALSE;
     Coordenada posicion;
     SpriteSequence sprite1{ "imagenes/AlfilBlanco.png",1 };
     SpriteSequence sprite2{ "imagenes/CaballoBlanco.png",1 };
@@ -57,5 +57,6 @@ public:
     virtual void movimientovalido(int origen, int destino, bool &b){}
     bool getPieza_movida() { return pieza_movida; }
     void setPieza_movida() { pieza_movida = TRUE; }
-    void setPieza_enemiga(bool pieza_enemiga_) { pieza_enemiga = pieza_enemiga_; }
+    void setPieza_nomovida() { pieza_movida = FALSE; }
+    void setPieza_enemiga_pieza(bool pieza_enemiga_) { pieza_enemiga_pieza = pieza_enemiga_; }
 };

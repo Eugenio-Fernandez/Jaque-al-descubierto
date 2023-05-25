@@ -28,7 +28,6 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 			if ((piezas.getPiezap(i) != nullptr)) {
 				Pieza* p_turno= piezas.getPiezap(i);
 				bool mov_val;
-				p_turno->movimientovalido(selector.getCasilla(), casilla_selector, mov_val);
 				for (int j = 0; j < piezas.getNum(); j++) {
 					if ((piezas.getPiezap(j)->getCasilla() == casilla_selector)&&(piezas.getPiezap(j)->getTipo()!=5)) {
 						//casilla_vacia = TRUE;
@@ -38,11 +37,16 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 
 						if((piezas.getPiezap(j)->getColor() != p_turno->getColor())&&(casilla_selector!=p_turno->getCasilla())) {
 							pieza_enemiga = TRUE;
+							if (piezas.getPiezap(j)->getTipo() == 4) {
+								p_turno->setPieza_enemiga_pieza(TRUE);
+							}
 							index_enemiga = j;
 						}
 						
 					}
 				}
+				p_turno->movimientovalido(selector.getCasilla(), casilla_selector, mov_val);
+				std::cout << "mov_val: " << mov_val << endl;
 				if ((mov_val)&&(pieza_amiga==FALSE)&&(pieza_saltada(piezas,p_turno->getCasilla(), casilla_selector) == FALSE)) {
 
 					if ((turno % 2 == 0) && (p_turno->getColor() == 0)) {
