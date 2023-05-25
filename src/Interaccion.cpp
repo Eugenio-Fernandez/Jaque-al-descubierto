@@ -1,6 +1,7 @@
 #include "Interaccion.h"
 #include<math.h>
 #include<iostream>
+#include"Peon.h"
 
 Interaccion::Interaccion() {
 	accion = FALSE;
@@ -10,7 +11,8 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 {
 	Coordenada destino = { 1 + ((-1.0) * selector.getColumna() / 4), 0.99 - 1.0 * selector.getFila() / 4 };
 	int casilla_selector=selector.getFila()*8+selector.getColumna();
-	bool casilla_vacia=FALSE;
+	std::cout << "Casilla selector: " << casilla_selector << "   " << selector.getFila() * 8 + selector.getColumna() << endl;
+	//bool casilla_vacia=FALSE;
 	bool pieza_amiga=FALSE;
 	bool pieza_enemiga = FALSE;
 	int index_enemiga;
@@ -28,25 +30,28 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 				bool mov_val;
 				p_turno->movimientovalido(selector.getCasilla(), casilla_selector, mov_val);
 				for (int j = 0; j < piezas.getNum(); j++) {
-					if (piezas.getPieza(j).getCasilla() == casilla_selector) {
-						casilla_vacia = TRUE;
-						if (piezas.getPieza(j).getColor() == p_turno->getColor()) {
+					if ((piezas.getPiezap(j)->getCasilla() == casilla_selector)&&(piezas.getPiezap(j)->getTipo()!=5)) {
+						//casilla_vacia = TRUE;
+						if (piezas.getPiezap(j)->getColor() == p_turno->getColor()) {
 							pieza_amiga = TRUE;
 						}
-						else {
+
+						if((piezas.getPiezap(j)->getColor() != p_turno->getColor())&&(casilla_selector!=p_turno->getCasilla())) {
 							pieza_enemiga = TRUE;
 							index_enemiga = j;
 						}
+						
 					}
 				}
 				if ((mov_val)&&(pieza_amiga==FALSE)&&(pieza_saltada(piezas,p_turno->getCasilla(), casilla_selector) == FALSE)) {
-					
+
 					if ((turno % 2 == 0) && (p_turno->getColor() == 0)) {
 						jaque_a_blanco = jaque_propio(piezas, p_turno->getCasilla(), casilla_selector, p_turno, pieza_enemiga);
 						std::cout << "Jaque a blanco: " << jaque_a_blanco << endl;
 						if (jaque_a_blanco == 0) {
 							p_turno->mueve(destino);
 							p_turno->setCasilla(casilla_selector);
+							std::cout << "Casilla selector: " << casilla_selector << endl;
 							if (pieza_enemiga == TRUE) {
 								piezas.eliminar(index_enemiga);
 
@@ -98,7 +103,8 @@ bool Interaccion::pieza_saltada(ListaPiezas& piezas, int origen, int destino) {
 
 	dif = destino - origen;
 
-	if ((dif == 10) || ((dif == 6) && (abs(destino - origen) > 8)) || ((dif == -6) && (abs(destino - origen) > 8)) || (dif == -10) || (dif == 17) || (dif == 15) || (dif == -15) || (dif == -17)) {
+	if ((dif == 10) || ((dif == 6) && (abs(destino - origen) > 8)) || ((dif == -6) && (abs(destino - origen) > 8))
+		|| (dif == -10) || (dif == 17) || (dif == 15) || (dif == -15) || (dif == -17)) {
 		return FALSE;//el caballo puede saltar
 	}
 
@@ -200,9 +206,6 @@ bool Interaccion::jaque_propio(ListaPiezas& piezas, int origen, int destino, Pie
 
 	saltar = pieza_saltada(piezas, origen, destino);
 	p->setCasilla(destino);
-
-	
-	
 
 	for (int i = 0; i < piezas.getNum(); i++) {
 		int pieza_comida=100;//valor que ninguna pieza tendra
