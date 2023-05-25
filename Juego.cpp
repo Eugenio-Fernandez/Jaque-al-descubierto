@@ -6,16 +6,16 @@
 #include "ETSIDI.h"
 #include "Interaccion.h"
 #include "Selector.h"
-
+#include "Menu.h"
 
 using ETSIDI::SpriteSequence;
 
 using namespace std;
-void op(int value);
+
 Tablero tablero;
 Interaccion interaccion;
+Menu menu;
 int xpos_raton, ypos_raton;
-
 
 
 void OnDraw(void); //esta funcion sera llamada para dibujar
@@ -44,19 +44,6 @@ int main(int argc, char* argv[])
 	tablero.setCoord();
 	tablero.inicio();
 
-	glutCreateMenu(op);
-	glutAddMenuEntry("Nueva partida", 1);
-	glutAddMenuEntry("Cargar partida", 2);
-	glutAddMenuEntry("Guardar partida", 3);
-	glutAddMenuEntry("Salir", 4);
-	glutAddMenuEntry("Menu", 5);
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-	//pasarle el control a GLUT,que llamara a los callbacks
-	glutMainLoop();
-
-	return 0;
-
 	//pasarle el control a GLUT,que llamara a los callbacks
 	glutMainLoop();
 
@@ -72,10 +59,10 @@ void OnDraw(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-
 	tablero.dibuja();
 	tablero.dibuja_selector();
 	tablero.piezas.dibuja();
+	menu.dibuja();
 
 	/*
 	prueba.setSize(0.25, 0.25);
@@ -89,6 +76,7 @@ void OnDraw(void)
 
 	glutSwapBuffers();
 }
+
 
 void glutMouseFunc(int boton, int estado, int x, int y) {
 	if ((boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN) && (interaccion.getAccion() == FALSE)) {
@@ -108,6 +96,7 @@ void glutMouseFunc(int boton, int estado, int x, int y) {
 
 void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 {
+	menu.tecla2(key);
 
 	if ((interaccion.getAccion() == TRUE) && (key == ' ')) {
 		Selector selector = tablero.getSelector();
@@ -129,5 +118,6 @@ void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 void onSpecialKeyboardDown(int key, int x, int y)
 {
 	tablero.tecla_selector(key);
+	menu.tecla(key);
 	glutPostRedisplay();
 }
