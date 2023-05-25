@@ -1,34 +1,22 @@
 #include "Menu.h"
 #include "freeglut.h"
 #include "ETSIDI.h"
-#include "Menu.h"
-#include "freeglut.h"
-#include "ETSIDI.h"
-#include <iostream>
+#include "cstdlib"
 #include "Tablero.h"
 using ETSIDI::Sprite;
-Tablero  tablero2;
+Tablero tablero2;
+
 Menu::Menu()
 {
-	menu1->setSize(8.0, 8.0);
+	menu1->setSize(2.0, 2.0);
 	menu1->setPos(4.0, 4.0);
-	menu2->setSize(8.0, 8.0);
+	menu2->setSize(2.0, 2.0);
 	menu2->setPos(4.0, 4.0);
 }
 
 Menu::~Menu() {
 	menu1->~Sprite();
 	menu2->~Sprite();
-}
-
-void Menu::dibuja() {
-	if (pantalla == 0) {
-		menu1->draw();
-	}
-
-	if (pantalla == 1) {
-		menu2->draw();
-	}
 }
 
 void Menu::flecha(int key) {
@@ -50,44 +38,52 @@ void Menu::flecha(int key) {
 	}
 }
 
-void op(int value) {
+void Menu::dibuja()
+{
 
-	switch (value) {
-	case 1:
-		std::cout << "Has seleccionado: Nueva partida" << std::endl;
-		// Aquí va el código para iniciar una nueva partida
-		//void dibuja();
-		tablero2.dibuja_selector();
-		tablero2.piezas.dibuja();
-		tablero2.dibuja();
+	if (inicio == 0) {
 
-		//tablero2.dibuja();
-		//tablero2.dibuja_selector();
+		if (modo1 == 1)menu1->draw();
+		if (modo1 == 2)menu2->draw();
+		if (modo1 == 1 && modo2 == 1) {
+
+			ETSIDI::play("sonidos/cr7.wav");
+			modo1 = 0;
+			inicio = 1;
+			delete menu1;
+			delete menu2;
+		}
+
+		if (modo1 == 2 && modo2 == 1 && inicio == 0) {
+			exit(0);
+		}
+	}
+}
+
+
+
+//Funcion para inicializar el selector
+void Menu::inicializa() {
+	Selector selector;
+}
+
+//Funcion para realizar el movimiento del selector por las casillas del tablero
+void Menu::tecla(unsigned char key) {
+	switch (key)
+	{
+	case GLUT_KEY_DOWN:
+		modo1 = 2;
 		break;
-	case 2:
-		std::cout << "Has seleccionado: Cargar partida" << std::endl;
-		// Aquí va el código para cargar una partida guardada
-		break;
-	case 3:
-		std::cout << "Has seleccionado: Guardar partida" << std::endl;
-		// Aquí va el código para guardar la partida actual
-		break;
-	case 4:
-		std::cout << "Has seleccionado: Salir del juego" << std::endl;
-		// Aquí va el código para salir del juego
-		exit(0);
-		break;
-	case 5:
-		std::cout << "Has seleccionado: Menu" << std::endl;
-		// Aquí va el código para volver a sacar el menu
-		//Menu();
-		//~Menu();
-		void dibuja();
-		void inicializa();
-		void tecla(unsigned char key);
-		void tecla2(unsigned char key);
+	case GLUT_KEY_UP:
+		modo1 = 1;
+	}
+}
+
+void Menu::tecla2(unsigned char key) {
+	switch (key)
+	{
+	case 13:
+		modo2 = 1;
 		break;
 	}
-
-
 }
