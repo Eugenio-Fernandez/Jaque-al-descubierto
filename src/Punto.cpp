@@ -8,9 +8,9 @@ Punto::Punto() {
 	sprite_punto.setSize(0.07, 0.07);
 }
 
-void Punto::dibuja_punto(float x,float y)
+void Punto::dibuja_punto(Coordenada coordenada)
 {
-	sprite_punto.setCenter(x,y);
+	sprite_punto.setCenter(coordenada.x,coordenada.y);
 	glPushMatrix();
 	sprite_punto.draw();
 	glPopMatrix();
@@ -26,6 +26,11 @@ void Punto::setCoord()
             k++;
         }
     }
+}
+
+Coordenada Punto::getCoord(int casilla)
+{
+	return coordPunto[casilla];
 }
 
 void Punto::mover_punto(Selector selector, ListaPiezas& piezas)
@@ -44,15 +49,16 @@ void Punto::mover_punto(Selector selector, ListaPiezas& piezas)
 				for (int destino = 0; destino < 64; destino++){
 					if ((mov_val == TRUE) && (Interaccion::pieza_saltada(piezas, casilla_selector, destino) == FALSE))
 						num_casillas_validas++;
+					Punto::dibuja_punto(getCoord(destino));
 				}
 				//vcasillas_validas = new int[num_casillas_validas];
-				for (int destino = 0; destino < 64; destino++) {
+				/*for (int destino = 0; destino < 64; destino++) {
 					for (int j = 0; j < num_casillas_validas;j++) {
 						if ((mov_val == TRUE) && (Interaccion::pieza_saltada(piezas, casilla_selector, destino) == FALSE))
 							//vcasillas_validas[j] = casilla_selector;
 							Punto::dibuja_punto(0.908,0.91);
 					}
-				}
+				}*/
 			}
 		}
 	}
