@@ -11,7 +11,7 @@
 using ETSIDI::SpriteSequence;
 
 using namespace std;
-
+void op(int value);
 Tablero tablero;
 Interaccion interaccion;
 int xpos_raton, ypos_raton;
@@ -40,9 +40,22 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc(OnKeyboardDown);
 	glutSpecialFunc(onSpecialKeyboardDown); //gestion de los cursores
 	glutMouseFunc(glutMouseFunc);
-	
+
 	tablero.setCoord();
 	tablero.inicio();
+
+	glutCreateMenu(op);
+	glutAddMenuEntry("Nueva partida", 1);
+	glutAddMenuEntry("Cargar partida", 2);
+	glutAddMenuEntry("Guardar partida", 3);
+	glutAddMenuEntry("Salir", 4);
+	glutAddMenuEntry("Menu", 5);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+	//pasarle el control a GLUT,que llamara a los callbacks
+	glutMainLoop();
+
+	return 0;
 
 	//pasarle el control a GLUT,que llamara a los callbacks
 	glutMainLoop();
@@ -63,7 +76,7 @@ void OnDraw(void)
 	tablero.dibuja();
 	tablero.dibuja_selector();
 	tablero.piezas.dibuja();
-	
+
 	/*
 	prueba.setSize(0.25, 0.25);
 	prueba.setCenter(Tablero::coordTab[56].x,Tablero::coordTab[56].y);
@@ -72,13 +85,13 @@ void OnDraw(void)
 	glPopMatrix();*/
 
 	//no borrar esta linea ni poner nada despues
-	
+
 
 	glutSwapBuffers();
 }
 
 void glutMouseFunc(int boton, int estado, int x, int y) {
-	if ((boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN)&&(interaccion.getAccion()==FALSE)) {
+	if ((boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN) && (interaccion.getAccion() == FALSE)) {
 		tablero.mouse_selector(x, y);
 		if (tablero.casilla_vacia() == FALSE) {
 			interaccion.setAccion();
@@ -95,14 +108,14 @@ void glutMouseFunc(int boton, int estado, int x, int y) {
 
 void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 {
-	
+
 	if ((interaccion.getAccion() == TRUE) && (key == ' ')) {
-		Selector selector= tablero.getSelector();
+		Selector selector = tablero.getSelector();
 		cout << tablero.getSelector().getCasilla() << endl;
 		interaccion.mover_pieza(selector, tablero.piezas);
-		
+
 	}
-	
+
 	tablero.tecla_selector(key);
 
 	if (key == ' ') {
@@ -118,6 +131,3 @@ void onSpecialKeyboardDown(int key, int x, int y)
 	tablero.tecla_selector(key);
 	glutPostRedisplay();
 }
-
-
-
