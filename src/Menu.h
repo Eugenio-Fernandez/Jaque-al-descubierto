@@ -14,5 +14,6 @@ public:
 	~Menu();
 	void dibuja();
 	void flecha(int key);
+	void op(int value);
 };
 
