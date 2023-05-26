@@ -3,8 +3,18 @@
 
 Peon::Peon(Coordenada posicion_, int color_, int casilla_)
 {
-	sprite3.setSize(0.25, 0.25);
-	sprite9.setSize(0.25, 0.25);
+	conf_modo();
+
+	if (modo == 1)
+		sprite3.setSize(0.25, 0.25);
+	if (modo == 2)
+		sprite3_1.setSize(0.25, 0.25);
+
+	if (modo == 1)
+		sprite9.setSize(0.25, 0.25);
+	if (modo == 2)
+		sprite9_1.setSize(0.25, 0.25);
+
 	posicion.x = posicion_.x;
 	posicion.y = posicion_.y;
 	color = color_;
@@ -18,17 +28,37 @@ Peon::~Peon()
 }
 
 void Peon::dibuja() {
-	
+
 	if (color == 0) {
-		sprite3.setCenter((float)posicion.x, (float)posicion.y);
+
+		if (modo == 1)
+			sprite3.setCenter((float)posicion.x, (float)posicion.y);
+		if (modo == 2)
+			sprite3_1.setCenter((float)posicion.x, (float)posicion.y);
+
 		glPushMatrix();
-		sprite3.draw();
+
+		if (modo == 1)
+			sprite3.draw();
+		if (modo == 2)
+			sprite3_1.draw();
+
 		glPopMatrix();
 	}
 	if (color == 1) {
-		sprite9.setCenter((float)posicion.x, (float)posicion.y);
+
+		if (modo == 1)
+			sprite9.setCenter((float)posicion.x, (float)posicion.y);
+		if (modo == 2)
+			sprite9_1.setCenter((float)posicion.x, (float)posicion.y);
+
 		glPushMatrix();
-		sprite9.draw();
+
+		if (modo == 1)
+			sprite9.draw();
+		if (modo == 2)
+			sprite9_1.draw();
+
 		glPopMatrix();
 	}
 }
