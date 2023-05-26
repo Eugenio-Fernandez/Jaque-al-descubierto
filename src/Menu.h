@@ -20,4 +20,5 @@ public:
 	void inicializa();
 	void tecla(unsigned char key);
 	void tecla2(unsigned char key);
+	void op(int value);
 };
