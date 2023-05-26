@@ -69,6 +69,7 @@ void OnDraw(void)
 		tablero.dibuja_casilla_roja(1);
 	}
 	tablero.piezas.dibuja();
+	menu.dibuja();
 	
 	/*
 	prueba.setSize(0.25, 0.25);
