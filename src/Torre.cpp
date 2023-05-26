@@ -36,6 +36,7 @@ void Torre::movimientovalido(int origen, int destino, bool& b) {
 	int dif = destino - origen;
 	if ((dif % 8 == 0)||((dif > -8) && (dif < 8) && ((((7 - origen % 8) >= dif) && (dif > 0)) || (((origen % 8) >= -dif) && (dif < 0))))) {
 		b = TRUE;
+		ETSIDI::play("sonidos/mov.wav");
 	}
 	else {
 		b= FALSE;
