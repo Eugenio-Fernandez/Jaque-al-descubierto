@@ -35,6 +35,7 @@ void Alfil::movimientovalido(int origen, int destino, bool &b) {
 	int dif = destino - origen;
 	if ((dif % 7 == 0) || (dif % 9 == 0)) {
 		b = TRUE;
+		ETSIDI::play("sonidos/mov.wav");
 	}
 	else {
 		b = FALSE;
