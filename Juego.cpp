@@ -16,7 +16,7 @@ Tablero tablero;
 Interaccion interaccion;
 Menu menu;
 int xpos_raton, ypos_raton;
-
+void op(int value);
 
 void OnDraw(void); //esta funcion sera llamada para dibujar
 void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
@@ -43,6 +43,9 @@ int main(int argc, char* argv[])
 
 	tablero.setCoord();
 	tablero.inicio();
+	glutCreateMenu(op);
+	glutAddMenuEntry("Salir", 1);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	//pasarle el control a GLUT,que llamara a los callbacks
 	glutMainLoop();
