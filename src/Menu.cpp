@@ -27,12 +27,12 @@ Menu::~Menu() {
 }
 int Menu::dibuja()
 {
-	int a = 0; // Inicializamos la variable a con un valor por defecto
+
 
 	if (inicio == 0) {
 		if (modo3 == 0) {
 			if (modo1 == 1) {
-				//menu1->draw();
+				menu1->draw();
 			}
 			else if (modo1 == 2) {
 				//menu2->draw();
@@ -50,12 +50,10 @@ int Menu::dibuja()
 		if (modo3 == 1) {
 
 			if (modo1 == 1) {
-				//menu3->draw();
-
+				menu3->draw();
 			}
 			else if (modo1 == 2) {
-				//menu4->draw();
-				a = 2;
+				menu4->draw();
 			}
 			if (modo2 == 1) {
 				std::cout << "esto" << std::endl;
