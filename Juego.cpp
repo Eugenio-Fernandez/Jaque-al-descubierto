@@ -89,8 +89,13 @@ void glutMouseFunc(int boton, int estado, int x, int y) {
 	if ((boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN)) {
 		tablero.mouse_selector(x, y);
 		Selector selector = tablero.getSelector();
-		//cout << tablero.getSelector().getCasilla() << endl;
-		interaccion.mover_pieza(selector, tablero.piezas);
+		cout << tablero.getSelector().getCasilla() << endl;
+		if (interaccion.getCorona() == FALSE) {
+			interaccion.mover_pieza(selector, tablero.piezas);
+		}
+		else {
+			interaccion.corona(selector, tablero.piezas, interaccion.getIndexpeon());
+		}
 	}
 	glutPostRedisplay();
 }
