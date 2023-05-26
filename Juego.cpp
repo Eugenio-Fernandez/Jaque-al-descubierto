@@ -6,7 +6,7 @@
 #include "ETSIDI.h"
 #include "Interaccion.h"
 #include "Selector.h"
-#include "Menu.h"
+
 
 using ETSIDI::SpriteSequence;
 
@@ -14,9 +14,9 @@ using namespace std;
 
 Tablero tablero;
 Interaccion interaccion;
-Menu menu;
 int xpos_raton, ypos_raton;
-void op(int value);
+
+
 
 void OnDraw(void); //esta funcion sera llamada para dibujar
 void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
@@ -40,12 +40,9 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc(OnKeyboardDown);
 	glutSpecialFunc(onSpecialKeyboardDown); //gestion de los cursores
 	glutMouseFunc(glutMouseFunc);
-
+	
 	tablero.setCoord();
 	tablero.inicio();
-	glutCreateMenu(op);
-	glutAddMenuEntry("Salir", 1);
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	//pasarle el control a GLUT,que llamara a los callbacks
 	glutMainLoop();
@@ -62,11 +59,17 @@ void OnDraw(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+
 	tablero.dibuja();
 	tablero.dibuja_selector();
+	if (interaccion.getJaqueblanco() == TRUE) {
+		tablero.dibuja_casilla_roja(0);
+	}
+	if (interaccion.getJaquenegro() == TRUE) {
+		tablero.dibuja_casilla_roja(1);
+	}
 	tablero.piezas.dibuja();
-	menu.dibuja();
-
+	
 	/*
 	prueba.setSize(0.25, 0.25);
 	prueba.setCenter(Tablero::coordTab[56].x,Tablero::coordTab[56].y);
@@ -75,23 +78,17 @@ void OnDraw(void)
 	glPopMatrix();*/
 
 	//no borrar esta linea ni poner nada despues
-
+	
 
 	glutSwapBuffers();
 }
 
-
 void glutMouseFunc(int boton, int estado, int x, int y) {
-	if ((boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN) && (interaccion.getAccion() == FALSE)) {
-		tablero.mouse_selector(x, y);
-		if (tablero.casilla_vacia() == FALSE) {
-			interaccion.setAccion();
-		}
-	}
-	if ((interaccion.getAccion() == TRUE) && (boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN)) {
+	//cout << "Accion: " << interaccion.getAccion() << endl;
+	if ((boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN)) {
 		tablero.mouse_selector(x, y);
 		Selector selector = tablero.getSelector();
-		cout << tablero.getSelector().getCasilla() << endl;
+		//cout << tablero.getSelector().getCasilla() << endl;
 		interaccion.mover_pieza(selector, tablero.piezas);
 	}
 	glutPostRedisplay();
@@ -99,15 +96,14 @@ void glutMouseFunc(int boton, int estado, int x, int y) {
 
 void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 {
-	menu.tecla2(key);
-
+	
 	if ((interaccion.getAccion() == TRUE) && (key == ' ')) {
-		Selector selector = tablero.getSelector();
+		Selector selector= tablero.getSelector();
 		cout << tablero.getSelector().getCasilla() << endl;
 		interaccion.mover_pieza(selector, tablero.piezas);
-
+		
 	}
-
+	
 	tablero.tecla_selector(key);
 
 	if (key == ' ') {
@@ -121,6 +117,8 @@ void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 void onSpecialKeyboardDown(int key, int x, int y)
 {
 	tablero.tecla_selector(key);
-	menu.tecla(key);
 	glutPostRedisplay();
 }
+
+
+
