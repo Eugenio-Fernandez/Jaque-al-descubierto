@@ -2,8 +2,18 @@
 
 Rey::Rey(Coordenada posicion_, int color_, int casilla_)
 {
-	sprite5.setSize(0.25, 0.25);
-	sprite11.setSize(0.25, 0.25);
+	conf_modo();
+
+	if (modo == 1)
+		sprite5.setSize(0.25, 0.25);
+	if (modo == 2)
+		sprite5_1.setSize(0.25, 0.25);
+
+	if (modo == 1)
+		sprite11.setSize(0.25, 0.25);
+	if (modo == 2)
+		sprite11_1.setSize(0.39, 0.58);
+
 	posicion.x = posicion_.x;
 	posicion.y = posicion_.y;
 	color = color_;
@@ -17,16 +27,37 @@ Rey::~Rey()
 }
 
 void Rey::dibuja() {
+
 	if (color == 0) {
-		sprite5.setCenter((float)posicion.x, (float)posicion.y);
+
+		if (modo == 1)
+			sprite5.setCenter((float)posicion.x, (float)posicion.y);
+		if (modo == 2)
+			sprite5_1.setCenter((float)posicion.x, (float)posicion.y);
+
 		glPushMatrix();
-		sprite5.draw();
+
+		if (modo == 1)
+			sprite5.draw();
+		if (modo == 2)
+			sprite5_1.draw();
+
 		glPopMatrix();
 	}
 	if (color == 1) {
-		sprite11.setCenter((float)posicion.x, (float)posicion.y);
+
+		if (modo == 1)
+			sprite11.setCenter((float)posicion.x, (float)posicion.y);
+		if (modo == 2)
+			sprite11_1.setCenter((float)posicion.x + 0.064, (float)posicion.y + 0.17);
+
 		glPushMatrix();
-		sprite11.draw();
+
+		if (modo == 1)
+			sprite11.draw();
+		if (modo == 2)
+			sprite11_1.draw();
+
 		glPopMatrix();
 	}
 }
