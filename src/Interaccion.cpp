@@ -17,6 +17,10 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 	int index_enemiga;
 	bool jaque_a_blanco = FALSE;
 	bool jaque_a_negro = FALSE;
+	bool enroque = FALSE;
+	Pieza* torre_de_enroque;
+	Coordenada destino_torre;
+	int casilla_torre_enroque;
 	
 	for (int i = 0; i < piezas.getNum(); i++) {
 		
@@ -44,13 +48,76 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 				}
 				
 				p_turno->movimientovalido(selector.getCasilla(), casilla_selector, mov_val);
-				if ((piezas.getPiezap(i)->getTipo()==5)&&(piezas.getPiezap(i)->getPieza_movida() ==0 )) {
+				if ((piezas.getPiezap(i)->getTipo()==5)&&(piezas.getPiezap(i)->getPieza_movida() ==0)) {
 					for (int k = 0; k < piezas.getNum(); k++) {
 						if ((piezas.getPiezap(k)->getTipo() == 6)
 							&& (piezas.getPiezap(i)->getColor()== piezas.getPiezap(k)->getColor())
 							&&(piezas.getPiezap(k)->getPieza_movida() == 0)
-							) {
-
+							) 
+						{
+							if (
+								(casilla_selector==6)&&(piezas.getPiezap(k)->getCasilla() == 7)
+								||
+								(casilla_selector == 2) && (piezas.getPiezap(k)->getCasilla() == 0)
+								||
+								(casilla_selector == 58) && (piezas.getPiezap(k)->getCasilla() == 56)
+								||
+								(casilla_selector == 62) && (piezas.getPiezap(k)->getCasilla() == 63)
+								) 
+							{
+								if (casilla_selector - piezas.getPiezap(i)->getCasilla()>0) {
+									int suma = 0;
+									for (int z = piezas.getPiezap(i)->getCasilla(); z < casilla_selector; z++) {
+										bool jaque=FALSE;
+										jaque=jaque_propio(piezas, z, z+1, p_turno, pieza_enemiga);
+										if (jaque==1) {
+											suma++;
+										}
+									}
+									if (suma == 0) {
+										mov_val = TRUE;
+										torre_de_enroque = piezas.getPiezap(k);
+										enroque = TRUE;
+										if(p_turno->getColor() == 0) {
+											casilla_torre_enroque = 5;
+											destino_torre = { (float)(1 + ((-1.0) * (casilla_torre_enroque % 8) / 4)),(float)( 1 - 1.0 * (casilla_torre_enroque - casilla_torre_enroque % 8) / 4)};
+										}
+										else {
+											casilla_torre_enroque = 61;
+											destino_torre = { (float)(1 + ((-1.0) * (casilla_torre_enroque % 8) / 4)),(float)(1 - 1.0 * (casilla_torre_enroque - casilla_torre_enroque % 8) / 4) };
+										}
+									}
+									else {
+										mov_val = FALSE;
+									}
+								}
+								else {
+									int suma = 0;
+									for (int z = piezas.getPiezap(i)->getCasilla(); z > casilla_selector; z--) {
+										bool jaque = FALSE;
+										jaque = jaque_propio(piezas, z, z - 1, p_turno, pieza_enemiga);
+										if (jaque == 1) {
+											suma++;
+										}
+									}
+									if (suma == 0) {
+										mov_val = TRUE;
+										torre_de_enroque = piezas.getPiezap(k);
+										enroque = TRUE;
+										if (p_turno->getColor() == 0) {
+											casilla_torre_enroque = 3;
+											destino_torre = { (float)(1 + ((-1.0) * (casilla_torre_enroque % 8) / 4)),(float)(1 - 1.0 * (casilla_torre_enroque - casilla_torre_enroque % 8) / 4) };
+										}
+										else {
+											casilla_torre_enroque = 59;
+											destino_torre = { (float)(1 + ((-1.0) * (casilla_torre_enroque % 8) / 4)),(float)(1 - 1.0 * (casilla_torre_enroque - casilla_torre_enroque % 8) / 4) };
+										}
+									}
+									else {
+										mov_val = FALSE;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -59,19 +126,26 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 					if ((turno % 2 == 0) && (p_turno->getColor() == 0)) {
 						jaque_a_blanco = jaque_propio(piezas, p_turno->getCasilla(), casilla_selector, p_turno, pieza_enemiga);
 						if (jaque_a_blanco == 0) {
-							p_turno->mueve(destino);
-							p_turno->setCasilla(casilla_selector);
-							if ((p_turno->getTipo() == 4)|| (p_turno->getTipo() == 5)|| (p_turno->getTipo() == 6)) {
-								p_turno->setPieza_movida();
+							if (enroque == TRUE) {
+								p_turno->mueve(destino);
+								p_turno->setCasilla(casilla_selector);
+								torre_de_enroque->mueve(destino_torre);
+								torre_de_enroque->setCasilla(casilla_torre_enroque);
 							}
-							if (pieza_enemiga == TRUE) {
-								piezas.eliminar(index_enemiga);
+							else {
+								p_turno->mueve(destino);
+								p_turno->setCasilla(casilla_selector);
+								if ((p_turno->getTipo() == 4) || (p_turno->getTipo() == 5) || (p_turno->getTipo() == 6)) {
+									p_turno->setPieza_movida();
+								}
+								if (pieza_enemiga == TRUE) {
+									piezas.eliminar(index_enemiga);
 
+								}
+								jaque_a_negro = jaque_a_enemigo(piezas, p_turno->getCasilla(), casilla_selector, p_turno);
+								turno++;
+								jaque_mate(piezas, 1, pieza_enemiga);
 							}
-							jaque_a_negro = jaque_a_enemigo(piezas, p_turno->getCasilla(), casilla_selector, p_turno);
-							turno++;
-							jaque_mate(piezas, 1,pieza_enemiga);
-							
 						}
 					}
 					if ((turno % 2 != 0) && (p_turno->getColor() != 0)) {
