@@ -35,6 +35,7 @@ void Rey::movimientovalido(int origen, int destino, bool& b) {
 	int dif = destino - origen;
 	if (((dif % 7 == 0) || (dif % 8 == 0) || (dif % 9 == 0)||(dif==1)||(dif==-1))&&(dif<10)&&(dif>-10)) {
 		b=TRUE;
+		ETSIDI::play("sonidos/mov.wav");
 	}
 	else {
 		b=FALSE;
