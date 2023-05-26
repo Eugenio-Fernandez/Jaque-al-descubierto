@@ -48,6 +48,7 @@ void Peon::movimientovalido(int origen, int destino, bool& b) {
 		) {
 		pieza_enemiga_pieza = FALSE;
 		b = TRUE;
+		ETSIDI::play("sonidos/mov.wav");
 
 	}
 	else {
