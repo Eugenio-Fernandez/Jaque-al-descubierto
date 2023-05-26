@@ -262,6 +262,7 @@ bool Interaccion::jaque_a_enemigo(ListaPiezas& piezas, int origen, int destino, 
 				comprobacion = piezas.getPiezap(i);
 				comprobacion->movimientovalido(comprobacion->getCasilla(), rey->getCasilla(), jaque);
 				if (jaque == TRUE) {
+					ETSIDI::play("sonidos/cuidao.wav");
 					return jaque;
 				}
 			}
@@ -273,6 +274,7 @@ bool Interaccion::jaque_a_enemigo(ListaPiezas& piezas, int origen, int destino, 
 		p->movimientovalido(p->getCasilla(), rey->getCasilla(), jaque);
 
 		if (jaque == TRUE) {
+			ETSIDI::play("sonidos/cuidao.wav");
 	
 			return jaque;
 		}
@@ -345,6 +347,7 @@ bool Interaccion::jaque_propio(ListaPiezas& piezas, int origen, int destino, Pie
 				saltar = pieza_saltada(piezas, piezas.getPieza(i).getCasilla(), rey->getCasilla());
 				if (saltar == FALSE) {
 					p->setCasilla(origen);
+					ETSIDI::play("sonidos/cuidao.wav");
 					return TRUE;
 				}
 			}
