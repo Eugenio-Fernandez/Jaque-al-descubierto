@@ -72,6 +72,7 @@ if (
 		((dif % 16 == 0) && ((origen >= 8) && (origen <= 15)) || ((origen >= 48) && (origen <= 55)))
 		) {
 		b = TRUE;
+		ETSIDI::play("sonidos/mov.wav");
 	}
 	else {
 		b = FALSE;
