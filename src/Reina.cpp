@@ -35,7 +35,7 @@ void Reina::dibuja() {
 void Reina::movimientovalido(int origen, int destino, bool& b) {
 	int dif = destino - origen;
 	
-	std::cout << "Reina\n";
+	
 	if (
 		(dif%7==0)
 		||
@@ -46,12 +46,10 @@ void Reina::movimientovalido(int origen, int destino, bool& b) {
 		((((dif > -8) && (dif < 8)) && ((((7 - origen % 8) >= dif) && (dif > 0)) || (((origen % 8) >= -dif) && (dif < 0)))))
 		) {
 		b= TRUE;
-		ETSIDI::play("sonidos/mov.wav");
 		
 	}
 	else {
 		b= FALSE;
-		std::cout << "no valido\n";
 	}
 }
 

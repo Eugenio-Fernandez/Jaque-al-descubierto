@@ -15,6 +15,7 @@ private:
     int tablero[TAM_TABLERO][TAM_TABLERO];
     Pieza* casillas[TAM_TABLERO][TAM_TABLERO];
     SpriteSequence sprite_selector{ "imagenes/Selector.png",5 };
+    SpriteSequence sprite_cuidao{ "imagenes/cuidao.png",5 };
     Selector selector;
     //Interaccion interaccion;
 
@@ -31,6 +32,7 @@ public:
     void tecla_selector(unsigned char key);
     void mouse_selector(int x, int y);
     bool casilla_vacia();
+    void dibuja_casilla_roja(bool color);
     Selector getSelector();
 };
 

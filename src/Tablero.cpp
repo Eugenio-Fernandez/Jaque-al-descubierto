@@ -142,3 +142,17 @@ bool Tablero::casilla_vacia() {
     }
     return TRUE;
 }
+
+void Tablero::dibuja_casilla_roja(bool color) {
+    int fila, columna;
+    sprite_cuidao.setSize(0.25, 0.25);
+    for (int i = 0; i < piezas.getNum(); i++) {
+        if ((piezas.getPiezap(i)->getTipo() == 5)&&(color==piezas.getPiezap(i)->getColor())) {
+            columna = piezas.getPiezap(i)->getCasilla() % 8;
+            fila = (piezas.getPiezap(i)->getCasilla() - columna) / 8;
+        }
+    }
+    sprite_cuidao.setCenter(1 + ((-1.0) * columna / 4), 1.0 - 1.0 * fila / 4);
+    sprite_cuidao.draw();
+    glPopMatrix();
+}
