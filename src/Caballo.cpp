@@ -36,6 +36,7 @@ void Caballo::movimientovalido(int origen, int destino, bool& b) {
 	int dif = destino - origen;
 	if (((dif%10==0)||(dif%17==0)||(dif%15==0)||(dif%6==0))&&(dif<18)&&(dif>-18)) {
 		 b = TRUE;
+		ETSIDI::play("sonidos/mov.wav");
 	}
 	else {
 		b = FALSE;
