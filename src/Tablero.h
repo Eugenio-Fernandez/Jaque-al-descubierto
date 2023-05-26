@@ -12,6 +12,8 @@ const int TAM_TABLERO = 8;
 class Tablero
 {
 private:
+    Menu menu;
+    int modo;
     int tablero[TAM_TABLERO][TAM_TABLERO];
     Pieza* casillas[TAM_TABLERO][TAM_TABLERO];
     SpriteSequence sprite_selector{ "imagenes/Selector.png",5 };
@@ -34,5 +36,6 @@ public:
     bool casilla_vacia();
     void dibuja_casilla_roja(bool color);
     Selector getSelector();
+    void conf_modo() { modo = menu.getMarcha(); }
 };
 
