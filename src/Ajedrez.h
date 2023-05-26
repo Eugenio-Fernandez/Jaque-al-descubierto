@@ -1,9 +1,0 @@
-#pragma once
-#include "Pieza.h"
-#include "Tablero.h"
-#include "Alfil.h"
-#include "Caballo.h"
-#include "Reina.h"
-#include "Peon.h"
-#include "Rey.h"
-#include "Torre.h"
