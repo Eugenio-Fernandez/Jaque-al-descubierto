@@ -2,6 +2,7 @@
 #include<math.h>
 #include<iostream>
 #include"Peon.h"
+#include "ETSIDI.h"
 
 Interaccion::Interaccion() {
 	accion = FALSE;
@@ -23,9 +24,7 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 	int casilla_torre_enroque;
 	
 	for (int i = 0; i < piezas.getNum(); i++) {
-		
 		if(piezas.getPiezap(i)->getCasilla() ==selector.getCasilla()) {
-			std::cout << "Termino\n";
 			if ((piezas.getPiezap(i) != nullptr)) {
 				Pieza* p_turno= piezas.getPiezap(i);
 				bool mov_val;
@@ -48,6 +47,7 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 				}
 				
 				p_turno->movimientovalido(selector.getCasilla(), casilla_selector, mov_val);
+
 				if ((piezas.getPiezap(i)->getTipo()==5)&&(piezas.getPiezap(i)->getPieza_movida() ==0)) {
 					for (int k = 0; k < piezas.getNum(); k++) {
 						if ((piezas.getPiezap(k)->getTipo() == 6)
@@ -390,11 +390,14 @@ void Interaccion::jaque_mate(ListaPiezas& piezas, bool color, bool enemiga) {
 	std::cout << "nofin: " << nofin << endl;
 	if (nofin == 0) {
 		jaque_mate_partida = TRUE;
+		ETSIDI::play("sonidos/gameover.wav");
 		if (color==0) {
 			std::cout << "Jaque mate gana negro\n";
+			
 		}
 		if (color == 1) {
 			std::cout << "Jaque mate gana blanco\n";
+			
 		}
 		piezas.eliminarContenido();
 	}
