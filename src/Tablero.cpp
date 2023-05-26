@@ -8,11 +8,11 @@ using namespace std;
 /*Blancas + y negras -
 Alfil 1
 Caballo 2
-Peón 3
+PeÃ³n 3
 Reina 4
 Rey 5
 Torre 6
-Vacía 0*/
+VacÃ­a 0*/
 
 int Tablero::start[8][8] = { {6,2,1,5,4,1,2,6} , {3,3,3,3,3,3,3,3} , {0,0,0,0,0,0,0,0} , {0,0,0,0,0,0,0,0},
                           {0,0,0,0,0,0,0,0} , {0,0,0,0,0,0,0,0} , {-3,-3,-3,-3,-3,-3,-3,-3} , {-6,-2,-1,-5,-4,-1,-2,-6} };
@@ -96,8 +96,13 @@ Tablero::~Tablero() {
 
 void Tablero::dibuja() {
 
+    conf_modo();
+
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Tablero.png").id);
+    if (modo == 1)
+        glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Tablero.png").id);
+    if (modo == 2)
+        glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Tablero_etsidi.png").id);
     glDisable(GL_LIGHTING);
     glBegin(GL_POLYGON);
     glColor3f(1, 1, 1);
