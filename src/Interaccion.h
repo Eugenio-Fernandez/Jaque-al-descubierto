@@ -10,6 +10,8 @@ class Interaccion
 	int turno = 0;
 	bool jaque_negro = FALSE;
 	bool jaque_blanco = FALSE;
+	bool corona_peon=FALSE;
+	int index_peon;
 public:
 	Interaccion();
 	~Interaccion(){}
@@ -21,6 +23,10 @@ public:
 	bool jaque_propio(ListaPiezas& piezas, int origen, int destino, Pieza* p, bool pieza_enemiga);
 	void jaque_mate(ListaPiezas& piezas, bool color, bool enemiga);
 	int getTurno() { return turno; }
+	void corona(Selector selector, ListaPiezas& piezas, int index);
+	void setCorona() { corona_peon = TRUE; }
+	bool getCorona() { return corona_peon; }
+	int getIndexpeon() { return index_peon; }
 
 	bool getJaquenegro() { return jaque_negro; }
 	bool getJaqueblanco() { return jaque_blanco; }
