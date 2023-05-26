@@ -11,10 +11,10 @@ ListaPiezas::ListaPiezas()
 bool ListaPiezas::agregar(Pieza* t)
 {
 	if (n < MAX_PIEZAS) {
-		lista[n++] = t;// último puesto sin rellenar
+		lista[n++] = t;// Ãºltimo puesto sin rellenar
 	}
 	else
-		return false; // capacidad máxima alcanzada
+		return false; // capacidad mÃ¡xima alcanzada
 	return true;
 }
 
@@ -40,6 +40,7 @@ void ListaPiezas::eliminar(int index){
 	if ((index < 0) || (index >= n))
 		return;
 	delete lista[index];
+	ETSIDI::play("sonidos/mario.wav");
 	n--;
 	for (int i = index; i < n; i++)
 		lista[i] = lista[i + 1];
