@@ -8,6 +8,44 @@ Interaccion::Interaccion() {
 	accion = FALSE;
 }
 
+void Interaccion::corona(Selector selector, ListaPiezas& piezas,int index)
+{
+	index_peon = index;
+	std::cout << "Estoy en corona\n";
+		int casilla_selector = selector.getFila() * 8 + selector.getColumna();
+		if (selector.getCasilla() == 27)//Alfil
+		{
+			Alfil* aux = new Alfil(piezas.getPiezap(index)->getPos(), piezas.getPiezap(index)->getColor(), piezas.getPiezap(index)->getCasilla());
+			piezas.agregar(aux);
+			corona_peon = FALSE;
+			piezas.eliminar(index);
+		}
+
+		if (selector.getCasilla() == 28)//Caballo
+		{
+			Caballo* aux = new Caballo(piezas.getPiezap(index)->getPos(), piezas.getPiezap(index)->getColor(), piezas.getPiezap(index)->getCasilla());
+			piezas.agregar(aux);
+			corona_peon = FALSE;
+			piezas.eliminar(index);
+		}
+
+		if (selector.getCasilla() == 35)//Torre
+		{
+			Torre* aux = new Torre(piezas.getPiezap(index)->getPos(), piezas.getPiezap(index)->getColor(), piezas.getPiezap(index)->getCasilla());
+			piezas.agregar(aux);
+			corona_peon = FALSE;
+			piezas.eliminar(index);
+		}
+
+		if (selector.getCasilla() == 36)//Reina
+		{
+			Reina* aux = new Reina(piezas.getPiezap(index)->getPos(), piezas.getPiezap(index)->getColor(), piezas.getPiezap(index)->getCasilla());
+			piezas.agregar(aux);
+			corona_peon = FALSE;
+			piezas.eliminar(index);
+		}
+}
+
 void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 {
 	Coordenada destino = { 1 + ((-1.0) * selector.getColumna() / 4), 0.99 - 1.0 * selector.getFila() / 4 };
@@ -138,6 +176,11 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 								if ((p_turno->getTipo() == 4) || (p_turno->getTipo() == 5) || (p_turno->getTipo() == 6)) {
 									p_turno->setPieza_movida();
 								}
+								if ((p_turno->getTipo() == 4)&&(casilla_selector>55)&&(p_turno->getColor()==0))
+								{
+									corona(selector,piezas,i);
+									setCorona();
+								}
 								if (pieza_enemiga == TRUE) {
 									piezas.eliminar(index_enemiga);
 
@@ -152,18 +195,33 @@ void Interaccion::mover_pieza(Selector selector, ListaPiezas &piezas)
 						jaque_a_negro = jaque_propio(piezas, p_turno->getCasilla(), casilla_selector, p_turno, pieza_enemiga);
 						
 						if (jaque_a_negro == 0) {
-							p_turno->mueve(destino);
-							p_turno->setCasilla(casilla_selector);
-							if ((p_turno->getTipo() == 4) || (p_turno->getTipo() == 5) || (p_turno->getTipo() == 6)) {
-								p_turno->setPieza_movida();
+							if (enroque == TRUE) {
+								p_turno->mueve(destino);
+								p_turno->setCasilla(casilla_selector);
+								torre_de_enroque->mueve(destino_torre);
+								torre_de_enroque->setCasilla(casilla_torre_enroque);
 							}
-							if (pieza_enemiga == TRUE) {
-								piezas.eliminar(index_enemiga);
+							else {
+								p_turno->mueve(destino);
+								p_turno->setCasilla(casilla_selector);
+								if ((p_turno->getTipo() == 4) || (p_turno->getTipo() == 5) || (p_turno->getTipo() == 6)) {
+									p_turno->setPieza_movida();
+								}
+								if ((p_turno->getTipo() == 4) && (casilla_selector < 8) && (p_turno->getColor() == 1))
+								{
+									std::cout << "Corona" << endl;
+									corona(selector, piezas, i);
+									setCorona();
+								}
+								if (pieza_enemiga == TRUE) {
+									piezas.eliminar(index_enemiga);
 
+								}
+								jaque_a_blanco = jaque_a_enemigo(piezas, p_turno->getCasilla(), casilla_selector, p_turno);
+								turno++;
+								jaque_mate(piezas, 0, pieza_enemiga);
+				
 							}
-							jaque_a_blanco = jaque_a_enemigo(piezas, p_turno->getCasilla(), casilla_selector, p_turno);
-							turno++;
-							jaque_mate(piezas, 0, pieza_enemiga);
 						}
 					}
 				}
