@@ -3,8 +3,18 @@
 
 Caballo::Caballo(Coordenada posicion_, int color_, int casilla_)
 {
-	sprite2.setSize(0.25, 0.25);
-	sprite8.setSize(0.25, 0.25);
+	conf_modo();
+
+	if (modo == 1)
+		sprite2.setSize(0.25, 0.25);
+	if (modo == 2)
+		sprite2_1.setSize(0.25, 0.25);
+
+	if (modo == 1)
+		sprite8.setSize(0.25, 0.25);
+	if (modo == 2)
+		sprite8_1.setSize(0.25, 0.25);
+
 	posicion.x = posicion_.x;
 	posicion.y = posicion_.y;
 	color = color_;
@@ -18,16 +28,37 @@ Caballo::~Caballo()
 }
 
 void Caballo::dibuja() {
+
 	if (color == 0) {
-		sprite2.setCenter((float)posicion.x, (float)posicion.y);
+
+		if (modo == 1)
+			sprite2.setCenter((float)posicion.x, (float)posicion.y);
+		if (modo == 2)
+			sprite2_1.setCenter((float)posicion.x, (float)posicion.y);
+
 		glPushMatrix();
-		sprite2.draw();
+
+		if (modo == 1)
+			sprite2.draw();
+		if (modo == 2)
+			sprite2_1.draw();
+
 		glPopMatrix();
 	}
 	if (color == 1) {
-		sprite8.setCenter((float)posicion.x, (float)posicion.y);
+
+		if (modo == 1)
+			sprite8.setCenter((float)posicion.x, (float)posicion.y);
+		if (modo == 2)
+			sprite8_1.setCenter((float)posicion.x, (float)posicion.y);
+
 		glPushMatrix();
-		sprite8.draw();
+
+		if (modo == 1)
+			sprite8.draw();
+		if (modo == 2)
+			sprite8_1.draw();
+
 		glPopMatrix();
 	}
 }
